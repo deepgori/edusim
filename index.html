@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EduSim — Interactive 3D Anatomy Explorer for immersive virtual learning. Explore 200+ anatomical structures in real-time.">
+  <meta name="author" content="Deep Gori">
+  <meta name="keywords" content="3D simulation, educational technology, Three.js, interactive learning, anatomy explorer, JavaScript, WebGL, human body">
+  <meta property="og:title" content="EduSim — Interactive 3D Anatomy Explorer">
+  <meta property="og:description" content="High-fidelity 3D anatomy atlas with 200+ structures. Built with Three.js, JavaScript, HTML & CSS.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <title>EduSim — Interactive 3D Educational Simulations</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- OrbitControls -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <!-- CSS2DRenderer for floating labels -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS2DRenderer.js"></script>
+  <!-- GLTFLoader for 3D model loading -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <!-- DRACOLoader for compressed models -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loading-screen">
+    <div class="loader-ring"></div>
+    <div class="loader-text">Initializing simulations...</div>
+  </div>
+
+  <div class="app-container" id="app">
+    <!-- Animated Background -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="main-nav" id="main-nav">
+      <div class="nav-logo" id="nav-home">
+        <div class="logo-icon">🧬</div>
+        <span>Edu<span class="gradient-text">Sim</span></span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#simulations" class="active" id="nav-sims">Simulations</a></li>
+        <li><a href="#dashboard" id="nav-dash">Dashboard</a></li>
+        <li><a href="https://github.com/deepgori" target="_blank" id="nav-github">GitHub</a></li>
+      </ul>
+    </nav>
+
+    <!-- ============================== -->
+    <!-- LANDING PAGE                    -->
+    <!-- ============================== -->
+    <main id="landing-page">
+      <!-- Hero -->
+      <section class="hero-section" id="hero">
+        <div class="hero-badge">
+          <span class="pulse-dot"></span>
+          3D Medical Visualization Platform
+        </div>
+        <h1 class="hero-title">
+          Explore the <span class="gradient-text">Human Body</span><br>
+          in Interactive 3D
+        </h1>
+        <p class="hero-subtitle">
+          A high-fidelity anatomical atlas built with Three.js and WebGL.
+          Explore 200+ anatomical structures across muscles, bones, and organs —
+          all rendered in real-time with interactive layer controls, search, and X-ray mode.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-lg" id="btn-explore">
+            🫀 Launch Anatomy Explorer
+          </button>
+          <button class="btn btn-secondary" id="btn-dashboard">
+            📊 View Dashboard
+          </button>
+        </div>
+      </section>
+
+      <!-- Stats -->
+      <div class="stats-bar" id="stats-bar">
+        <div class="stat-item">
+          <div class="stat-value" id="stat-sims">200+</div>
+          <div class="stat-label">Anatomical Structures</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="stat-interactions">GLTF</div>
+          <div class="stat-label">3D Model Format</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="stat-objects">DRACO</div>
+          <div class="stat-label">Compressed (7.9 MB)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="stat-realtime">60 FPS</div>
+          <div class="stat-label">WebGL Rendering</div>
+        </div>
+      </div>
+
+      <!-- Simulation Cards -->
+      <section id="simulations">
+        <div class="section-header">
+          <div class="section-tag">Featured</div>
+          <h2 class="section-title">3D Anatomy Atlas</h2>
+          <p class="section-desc">Click to launch the full interactive body explorer</p>
+        </div>
+
+        <div class="sim-grid" id="sim-grid">
+          <!-- Anatomy Card (FEATURED) -->
+          <div class="sim-card anatomy featured" id="card-anatomy" role="button" tabindex="0" aria-label="Launch Anatomy Explorer">
+            <div class="sim-card-preview">
+              <div class="sim-card-gradient"></div>
+              <canvas id="preview-anatomy"></canvas>
+              <span class="sim-card-badge">⭐ Featured — GLTF Model</span>
+            </div>
+            <div class="sim-card-body">
+              <h3 class="sim-card-title">🫀 Human Anatomy Atlas</h3>
+              <p class="sim-card-desc">
+                Explore a high-fidelity 3D human body model with 200+ anatomical structures.
+                Toggle muscles, bones, and organs. Click any structure for detailed medical info
+                with Wikipedia links. Built from the Z-Anatomy open dataset (CC BY-SA 4.0).
+              </p>
+              <div class="sim-card-meta">
+                <div class="sim-card-tags">
+                  <span class="sim-tag">GLTF/DRACO</span>
+                  <span class="sim-tag">200+ Meshes</span>
+                  <span class="sim-tag">X-Ray Mode</span>
+                  <span class="sim-tag">Search</span>
+                </div>
+                <button class="sim-card-action" aria-label="Start Anatomy Explorer">→</button>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </section>
+
+      <!-- Dashboard Section -->
+      <section id="dashboard">
+        <div class="section-header">
+          <div class="section-tag">Analytics</div>
+          <h2 class="section-title">Student Progress Dashboard</h2>
+          <p class="section-desc">Track your anatomy learning outcomes and exploration metrics</p>
+        </div>
+
+        <div class="dashboard-section">
+          <div class="dashboard-grid" id="dashboard-metrics">
+            <!-- Filled dynamically -->
+          </div>
+
+          <div class="chart-row">
+            <div class="chart-card">
+              <div class="chart-card-title">📈 Learning Progress Over Time</div>
+              <div class="chart-container">
+                <canvas id="chart-progress"></canvas>
+              </div>
+            </div>
+            <div class="chart-card">
+              <div class="chart-card-title">🎯 Body System Exploration</div>
+              <div class="chart-container">
+                <canvas id="chart-completion"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-row">
+            <div class="chart-card">
+              <div class="chart-card-title">⏱ Time Spent Exploring</div>
+              <div class="chart-container">
+                <canvas id="chart-time"></canvas>
+              </div>
+            </div>
+            <div class="chart-card">
+              <div class="chart-card-title">🏆 Anatomy Skill Profile</div>
+              <div class="chart-container">
+                <canvas id="chart-scores"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="main-footer">
+        <ul class="footer-links">
+          <li><a href="https://github.com/deepgori" target="_blank">GitHub</a></li>
+          <li><a href="https://linkedin.com/in/deepgori" target="_blank">LinkedIn</a></li>
+        </ul>
+        <p>EduSim © 2025 Deep Gori — Built with Three.js, JavaScript, HTML & CSS</p>
+      </footer>
+    </main>
+
+    <!-- ============================== -->
+    <!-- SIMULATION VIEW (Fullscreen)    -->
+    <!-- ============================== -->
+    <div class="simulation-view" id="simulation-view">
+      <div class="sim-toolbar">
+        <div class="sim-toolbar-left">
+          <button class="sim-back-btn" id="sim-back" aria-label="Back to simulations">←</button>
+          <span class="sim-toolbar-title" id="sim-title">Chemistry Lab</span>
+        </div>
+        <div class="sim-toolbar-right">
+          <button class="btn btn-sm btn-secondary" id="sim-reset">↺ Reset</button>
+        </div>
+      </div>
+      <div class="sim-canvas-container" id="sim-canvas-container">
+        <canvas id="sim-canvas"></canvas>
+        <!-- HUD injected dynamically -->
+        <div class="hud-overlay" id="hud-overlay"></div>
+        <!-- Tutorial overlay -->
+        <div class="tutorial-overlay hidden" id="tutorial-overlay">
+          <div class="tutorial-card">
+            <div class="tutorial-step" id="tutorial-step">Step 1 of 3</div>
+            <h3 id="tutorial-title">Welcome to the Lab</h3>
+            <p id="tutorial-text">Click and drag to rotate the environment. Use scroll to zoom in and out.</p>
+            <button class="btn btn-primary btn-sm" id="tutorial-next">Got it →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notifications -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Scripts (order matters) -->
+  <script src="js/utils/helpers.js"></script>
+  <script src="js/utils/analytics.js"></script>
+  <script src="js/ui/notifications.js"></script>
+  <script src="js/ui/hud.js"></script>
+  <script src="js/ui/objectives.js"></script>
+  <script src="js/ui/dashboard.js"></script>
+  <script src="js/sceneManager.js"></script>
+
+  <script src="js/simulations/anatomy.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
